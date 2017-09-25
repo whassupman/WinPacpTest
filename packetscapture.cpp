@@ -48,6 +48,12 @@ bool PacketsCapture::findDevices()
 //            mDebug(QString(" (No description available)"));
         info.name = QString(d->name);
         info.description = QString(d->description);
+        if(d->addresses != NULL)
+                /* 获得接口第一个地址的掩码 */
+                info.netmask=((struct sockaddr_in *)(d->addresses->netmask))->sin_addr.S_un.S_addr;
+            else
+                /* 如果接口没有地址，那么我们假设一个C类的掩码 */
+                info.netmask=0xffffff;
         devices.append(info);
         mDebug(devices.last().description);
     }
@@ -76,6 +82,49 @@ bool PacketsCapture::start(int index)
             pcap_close(adhandle);
             return false;
         }else{
+            mDebug(QString("listening on %1...\n").arg(devices[index].description));
+            /* 开始捕获 */
+            (new CaptureThread(adhandle))->start();
+            handle = adhandle;
+            mDebug("Start to capture data");
+            return true;
+        }
+    }
+}
+
+bool PacketsCapture::start(int index, char filter[])
+{
+    char errbuf[PCAP_ERRBUF_SIZE];
+    struct bpf_program fcode;
+    pcap_t *adhandle;
+    if((adhandle= pcap_open(devices[index].name.toStdString().c_str(),          // 设备名
+                              65535,            // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+                              PCAP_OPENFLAG_PROMISCUOUS,    // 混杂模式
+                              1000,             // 读取超时时间
+                              NULL,             // 远程机器验证
+                              errbuf            // 错误缓冲池
+                             ) ) == NULL)
+    {
+        mDebug(QString("Unable to open the adapter. %1 is not supported by WinPcap").arg(devices[index].name));
+        return false;
+    }else{
+        if(pcap_datalink(adhandle) != DLT_EN10MB){
+            showD("警告",QString("This program works only on Ethernet networks."));
+            pcap_close(adhandle);
+            return false;
+        }else{
+            //编译过滤器
+            if (pcap_compile(adhandle, &fcode, filter, 1, devices[index].netmask) <0 )
+            {
+                fprintf(stderr,"Unable to compile the packet filter. Check the syntax.");
+                return false;
+            }
+            //设置过滤器
+            if (pcap_setfilter(adhandle, &fcode)<0)
+            {
+                mDebug("Error setting the filter.");
+                return false;
+            }
             mDebug(QString("listening on %1...\n").arg(devices[index].description));
             /* 开始捕获 */
             (new CaptureThread(adhandle))->start();

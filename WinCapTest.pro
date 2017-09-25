@@ -25,7 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += D:/Libs/WpdPack/Include
 
-LIBS += D:/Libs/WpdPack/Lib/*.a
+LIBS += D:/Libs/WpdPack/Lib/libpacket.a \
+        D:/Libs/WpdPack/Lib/libwpcap.a
 
 SOURCES += \
         main.cpp \

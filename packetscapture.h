@@ -21,12 +21,14 @@ public:
     typedef struct{
         QString name;
         QString description;
+        u_int netmask;
     }DeviceInfo;
 
     explicit PacketsCapture(QObject *parent = nullptr);
     ~PacketsCapture();
     bool findDevices();                 //发现网卡设备
     bool start(int index);              //开始捕获数据包
+    bool start(int index, char filter[]);   //开始捕获数据包
     void stop();                        //停止捕获数据包
 
 private:

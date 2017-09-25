@@ -18,7 +18,8 @@ Widget::~Widget()
 
 void Widget::on_pbStart_clicked()
 {
-    packetCapture->start(ui->cbDevices->currentIndex());
+    char filter[] = "ether proto 0x888e";
+    mDebug(packetCapture->start(ui->cbDevices->currentIndex(),filter));
 }
 
 void Widget::on_pbStop_clicked()

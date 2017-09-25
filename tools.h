@@ -13,10 +13,10 @@
 
 //显示调试信息的宏
 #ifdef DEBUG
-#define mDebug(x)     (qDebug()    << "Debug   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x)
-#define mWarning(x)   (qWarning()  << "Warning " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x)
-#define mError(x)     (qCritical() << "Error   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x)
-#define mInfo(x)      (qInfo()     << "Infor   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x)
+#define mDebug(x)     (qDebug()    << "Debug   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" << x)
+#define mWarning(x)   (qWarning()  << "Warning " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" << x)
+#define mError(x)     (qCritical() << "Error   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" << x)
+#define mInfo(x)      (qInfo()     << "Infor   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" << x)
 #else
 #define mDebug(x)     (Tools::log("Debug   " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x))
 #define mWarning(x)   (Tools::log("Warning " + QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ") + QString(__FILE__) + " " + QString(__FUNCTION__) + " " + QString::number(__LINE__) + ">>" + " " + x))
