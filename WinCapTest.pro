@@ -39,7 +39,8 @@ HEADERS += \
         widget.h \
     packetscapture.h \
     base.h \
-    tools.h
+    tools.h \
+    headers.h
 
 FORMS += \
         widget.ui \

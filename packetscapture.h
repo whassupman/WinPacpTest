@@ -7,11 +7,12 @@
 #include <QList>
 
 #include "tools.h"
+#include "headers.h"
 
 #define HAVE_REMOTE
 #include <pcap.h>
 
-QString ucharToQString(const u_char data[]);
+QString ucharToHexString(const u_char data[]);
 void packetHandler(u_char *user, const struct pcap_pkthdr *header, const u_char *pkt_data);
 
 class PacketsCapture : public QObject
@@ -27,10 +28,13 @@ public:
 
     explicit PacketsCapture(QObject *parent = nullptr);
     ~PacketsCapture();
-    bool findDevices();                 //发现网卡设备
-    bool start(int index);              //开始捕获数据包
+    bool findDevices();                     //发现网卡设备
+    bool start(int index);                  //开始捕获数据包
     bool start(int index, char filter[]);   //开始捕获数据包
-    void stop();                        //停止捕获数据包
+    void stop();                            //停止捕获数据包
+    static void printHexString(u_int8_t data);
+    static void printHexString(u_int16_t data);
+    static void printHexString(u_int8_t data[], u_int8_t length);
 
 private:
     pcap_t *handle;
