@@ -1,9 +1,19 @@
 #include "packetscapture.h"
 
-void packetHandler(u_char *param, const pcap_pkthdr *header, const u_char *pkt_data)
+void packetHandler(u_char *user, const pcap_pkthdr *header, const u_char *pkt_data)
 {
-    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
-    mDebug(time);
+//    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
+    mDebug(QString("Length:%1, CaptureLength:%2")
+          .arg(header->len).arg(header->caplen));
+}
+
+QString ucharToQString(const u_char data[])
+{
+    QString s = "";
+    for(int i=0;data[i]!='\0';i++){
+        s += data[i];
+    }
+    return s;
 }
 
 PacketsCapture::PacketsCapture(QObject *parent) : QObject(parent)
@@ -20,7 +30,6 @@ bool PacketsCapture::findDevices()
 {
     pcap_if_t *alldevs;
     pcap_if_t *d;
-    pcap_t *adhandle;
     char errbuf[PCAP_ERRBUF_SIZE];
 
     /* 获取本机设备列表 */
@@ -61,6 +70,7 @@ bool PacketsCapture::findDevices()
     pcap_freealldevs(alldevs);
     //将设备列表发送给主程序
     emit devivicesFounded(devices);
+    return true;
 }
 
 bool PacketsCapture::start(int index)

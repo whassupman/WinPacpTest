@@ -11,7 +11,8 @@
 #define HAVE_REMOTE
 #include <pcap.h>
 
-void packetHandler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data);
+QString ucharToQString(const u_char data[]);
+void packetHandler(u_char *user, const struct pcap_pkthdr *header, const u_char *pkt_data);
 
 class PacketsCapture : public QObject
 {
