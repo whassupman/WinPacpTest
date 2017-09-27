@@ -32,7 +32,12 @@ void packetHandler(u_char *user, const pcap_pkthdr *header, const u_char *pkt_da
     printHex16(p->ethernetHeader.type);
     printHex(p->eapolHeader.version);
     printHex(p->eapolHeader.type);
-    mDebug(p->eapolHeader.length);
+    printHex16(p->eapolHeader.length);
+    if(p->eapolHeader.type == Eap_Packet){
+        printHex(p->eapHeader.code);
+        printHex(p->eapHeader.identifier);
+        printHex16(p->eapHeader.length);
+    }
 }
 
 PacketsCapture::PacketsCapture(QObject *parent) : QObject(parent)
